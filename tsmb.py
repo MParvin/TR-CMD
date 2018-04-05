@@ -39,7 +39,11 @@ def startCMD(bot, update):
 
 def helpCMD(bot, update):
     update.message.reply_text("This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.")    
-    
+
+def error(bot, update, error):
+    """Log Errors caused by Updates."""
+    logger.warning('Update "%s" caused error "%s"', update, error)
+ 
 def main():
     updater = Updater("193025875:AAHZ3hIanIau-Hg04B-mZREFBjLl6GvM9fk")
     dp = updater.dispatcher
@@ -48,3 +52,12 @@ def main():
     dp.add_handler(CommandHandler("ping8", ping8))
     dp.add_handler(CommandHandler("help", helpCMD))
     dp.add_handler(MessageHandler(Filters.text, runCMD))
+    
+    dp.add_error_handler(error)
+    
+    updater.start_polling()
+    
+    updater.idle()
+    
+if __name__ == '__main__':
+    main()
