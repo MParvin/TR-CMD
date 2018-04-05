@@ -41,7 +41,7 @@ def helpCMD(bot, update):
     update.message.reply_text("This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.")    
     
 def main():
-    updater = Updater("TOKEN")
+    updater = Updater("193025875:AAHZ3hIanIau-Hg04B-mZREFBjLl6GvM9fk")
     dp = updater.dispatcher
     
     dp.add_handler(CommandHandler("start", startCMD))
