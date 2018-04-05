@@ -47,4 +47,4 @@ def main():
     dp.add_handler(CommandHandler("start", startCMD))
     dp.add_handler(CommandHandler("ping8", ping8))
     dp.add_handler(CommandHandler("help", helpCMD))
-    
+    dp.add_handler(MessageHandler(Filters.text, runCMD))
