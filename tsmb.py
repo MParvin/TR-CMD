@@ -6,10 +6,8 @@ Created on Wed Apr  4 19:06:08 2018
 @author: mparvin
 """
 
-### Debug
-debug = True
-
 import subprocess
+import configparser
 import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
@@ -20,8 +18,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
+config = configparser.ConfigParser()
+config.read('config')
 ### This function run command and send output to user
 def runCMD(bot, update):
+    if not isAdmin(bot, update):
+        notAdmin(bot, update)
+        return
     usercommand = update.message.text
     cmdProc = subprocess.Popen(usercommand,
                                          stdout=subprocess.PIPE, 
@@ -35,23 +38,38 @@ def runCMD(bot, update):
     
 ### This function ping 8.8.8.8 and send you result    
 def ping8(bot, update):
+    if not isAdmin(bot, update):
+        notAdmin(bot, update)
+        return
     cmdOut = str(subprocess.check_output('ping' , '8.8.8.8 -c4',
                                          stderr=subprocess.STDOUT,
                                          shell=True),'utf-8')
     update.message.reply_text(cmdOut)
     
 def startCMD(bot, update):
+    if not isAdmin(bot, update):
+        notAdmin(bot, update)
+        return
     update.message.reply_text("Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!")
 
 def helpCMD(bot, update):
+    if not isAdmin(bot, update):
+        notAdmin(bot, update)
+        return
     update.message.reply_text("This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.")    
 
 def topCMD(bot, update):
+    if not isAdmin(bot, update):
+        notAdmin(bot, update)
+        return
     cmdOut = str(subprocess.check_output('top -n 1',
                                   shell=True),'utf-8')
     update.message.reply_text(cmdOut)
 
 def HTopCMD(bot, update):
+    if not isAdmin(bot, update):
+        notAdmin(bot, update)
+        return
     htopCheck = subprocess.call(['which','htop'])
     if htopCheck != 0:
         update.message.reply_text("htop is not installed on your system, Please install it first and try again")
@@ -71,8 +89,18 @@ def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
  
+def isAdmin(bot, update):
+    chat_id = update.message.chat_id
+    if chat_id == config['SecretConfig']['admincid']:
+        return True
+    else:
+        return False
+    
+def notAdmin(bot, update):
+    update.message.reply_text("You cannot use this bot, because you are not Admin!!!!")
+    
 def main():
-    updater = Updater("193025875:AAHZ3hIanIau-Hg04B-mZREFBjLl6GvM9fk")
+    updater = Updater(config['SecretConfig']['Token'])
     dp = updater.dispatcher
     
     dp.add_handler(CommandHandler("start", startCMD))
