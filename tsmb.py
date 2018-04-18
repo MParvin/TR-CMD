@@ -12,14 +12,18 @@ import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 
-# Enable logging
+
+config = configparser.ConfigParser()
+config.read('config')
+### Get admin chat_id from config file
+### For more security replies only send to admin chat_id
+adminCID = config['SecretConfig']['admincid']
+
+### Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-config = configparser.ConfigParser()
-config.read('config')
 ### This function run command and send output to user
 def runCMD(bot, update):
     if not isAdmin(bot, update):
@@ -31,9 +35,9 @@ def runCMD(bot, update):
                                          shell=True)
     cmdOut, cmdErr = cmdProc.communicate()
     if cmdOut:
-        update.message.reply_text(str(cmdOut,'utf-8'))
+        bot.sendMessage(text=str(cmdOut,'utf-8'),chat_id=adminCID)
     else:
-        update.message.reply_text(str(cmdErr,'utf-8'))
+        bot.sendMessage(text=str(cmdErr,'utf-8'),chat_id=adminCID)
     
 ### This function ping 8.8.8.8 and send you result    
 def ping8(bot, update):
@@ -42,40 +46,42 @@ def ping8(bot, update):
     cmdOut = str(subprocess.check_output('ping' , '8.8.8.8 -c4',
                                          stderr=subprocess.STDOUT,
                                          shell=True),'utf-8')
-    update.message.reply_text(cmdOut)
+    bot.sendMessage(text=cmdOut,chat_id=adminCID)
     
 def startCMD(bot, update):
     if not isAdmin(bot, update):
         return
-    update.message.reply_text("Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!")
+    bot.sendMessage(text="Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!",chat_id=adminCID)
 
 def helpCMD(bot, update):
     if not isAdmin(bot, update):
         return
-    update.message.reply_text("This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.")    
+    bot.sendMessage(text="This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.",chat_id=adminCID)
 
 def topCMD(bot, update):
     if not isAdmin(bot, update):
         return
     cmdOut = str(subprocess.check_output('top -n 1',
                                   shell=True),'utf-8')
-    update.message.reply_text(cmdOut)
+    bot.sendMessage(text=cmdOut,chat_id=adminCID)
+    bot.sendMessage(text=cmdOut,chat_id=adminCID)
 
 def HTopCMD(bot, update):
+    ## Is this user admin?
     if not isAdmin(bot, update):
         return
+    ## Checking requirements on your system
     htopCheck = subprocess.call(['which','htop'])
     if htopCheck != 0:
-        update.message.reply_text("htop is not installed on your system, Please install it first and try again")
+        bot.sendMessage(text="htop is not installed on your system, Please install it first and try again",chat_id=adminCID)
         return
     ahaCheck = subprocess.call(['which','aha'])
     if ahaCheck != 0:
-        update.message.reply_text("aha is not installed on your system, Please install it first and try again")
+        bot.sendMessage(text="aha is not installed on your system, Please install it first and try again",chat_id=adminCID)
         return
-    chat_id = update.message.chat_id
     os.system('echo q | htop | aha --black --line-fix  > ./htop-output.html')
     with open('./htop-output.html',"rb") as fileToSend:
-        bot.sendDocument(document=fileToSend,chat_id=chat_id)
+        bot.sendDocument(document=fileToSend,chat_id=adminCID)
     if os.path.exists('./htop-output.html'):
         os.remove('./htop-output.html')
 
@@ -85,7 +91,7 @@ def error(bot, update, error):
  
 def isAdmin(bot, update):
     chat_id = update.message.chat_id
-    if chat_id == config['SecretConfig']['admincid']:
+    if chat_id == adminCID:
         return True
     else:
         update.message.reply_text("You cannot use this bot, because you are not Admin!!!!")
