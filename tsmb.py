@@ -23,7 +23,6 @@ config.read('config')
 ### This function run command and send output to user
 def runCMD(bot, update):
     if not isAdmin(bot, update):
-        notAdmin(bot, update)
         return
     usercommand = update.message.text
     cmdProc = subprocess.Popen(usercommand,
@@ -39,7 +38,6 @@ def runCMD(bot, update):
 ### This function ping 8.8.8.8 and send you result    
 def ping8(bot, update):
     if not isAdmin(bot, update):
-        notAdmin(bot, update)
         return
     cmdOut = str(subprocess.check_output('ping' , '8.8.8.8 -c4',
                                          stderr=subprocess.STDOUT,
@@ -48,19 +46,16 @@ def ping8(bot, update):
     
 def startCMD(bot, update):
     if not isAdmin(bot, update):
-        notAdmin(bot, update)
         return
     update.message.reply_text("Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!")
 
 def helpCMD(bot, update):
     if not isAdmin(bot, update):
-        notAdmin(bot, update)
         return
     update.message.reply_text("This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.")    
 
 def topCMD(bot, update):
     if not isAdmin(bot, update):
-        notAdmin(bot, update)
         return
     cmdOut = str(subprocess.check_output('top -n 1',
                                   shell=True),'utf-8')
@@ -68,7 +63,6 @@ def topCMD(bot, update):
 
 def HTopCMD(bot, update):
     if not isAdmin(bot, update):
-        notAdmin(bot, update)
         return
     htopCheck = subprocess.call(['which','htop'])
     if htopCheck != 0:
@@ -94,10 +88,8 @@ def isAdmin(bot, update):
     if chat_id == config['SecretConfig']['admincid']:
         return True
     else:
+        update.message.reply_text("You cannot use this bot, because you are not Admin!!!!")
         return False
-    
-def notAdmin(bot, update):
-    update.message.reply_text("You cannot use this bot, because you are not Admin!!!!")
     
 def main():
     updater = Updater(config['SecretConfig']['Token'])
