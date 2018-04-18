@@ -26,7 +26,8 @@ Put your chat_id and Token(in step1) in config.
  ```bash
  ./tsmb.py
  ```
-
+## Updates:
+ * For more security all response will be sent to the Admin.
 
 ## Todo:
 * Change admin check structure
