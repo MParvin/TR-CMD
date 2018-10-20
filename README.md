@@ -4,6 +4,7 @@ Telegram Server Manager Bot - Safe &amp; Easy run command in your RaspberryPi, P
 # How to use:
  1. To begin, you'll need an Access Token. If you already read and followed [Introduction to the API](https://github.com/python-telegram-bot/python-telegram-bot/wiki/Introduction-to-the-API), you can use the one you generated then. If not: To generate an Access Token, you have to talk to @BotFather and follow a few simple steps ([described here](https://core.telegram.org/bots#6-botfather)). You should really read the introduction first, though.
  Source: [Your first bot from python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+ 
  2 . First install some dependencies:
  ```bash
   sudo pip install python-telegram-bot
