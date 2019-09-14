@@ -7,13 +7,13 @@ Telegram Server Manager Bot - Safe &amp; Easy run command in your RaspberryPi, P
  
  2 . First install some dependencies:
  ```bash
-  sudo pip install python-telegram-bot
+  sudo pip install -r requirements.txt
   ```
   Best way is use Virtualenv:
   ```bash
   virtualenv -p python3 .env
   source .env/bin/activate
-  pip install python-telegram-bot
+  pip install requirements.txt
   ```
   Install these package for using htop command:
   #### In debian base:
