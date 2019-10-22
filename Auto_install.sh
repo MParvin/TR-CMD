@@ -3,6 +3,7 @@
 ## Set default commands
 pipCommand="pip"
 pythonCommand="python"
+useBale=0
 
 ## Display help for commands
 showHelp() {
@@ -19,8 +20,10 @@ showHelp() {
 
 ## Use virtualenv
 useVenv() {
-virtualenv -p $pythonCommand venv 
-source venv/bin/activate
+	## Create virtual environment
+	virtualenv -p $pythonCommand venv 
+	## Activate virtual environment
+	source venv/bin/activate
 }
 
 
@@ -39,16 +42,31 @@ installAha() {
 
 ## Install htop
 installHtop() {
+	echo "Installing htop, please wait a moment..."
 	yum install -y htop &> /dev/null ||  apt install -y htop &> /dev/null
 }
 
+configureBot(){
+	echo -e "To configure your bot, you must have a Telegram or Bale token\n
+		How to create Telegram bot: https://core.telegram.org/bots#3-how-do-i-create-a-bot\n
+		How to create Bale bot: https://devbale.ir/quick-start\n"
+	read -p "Enter your bot token here:"
+	
+	telegramToken=$REPLY
 
+	echo -e "Get chat_id and enter here:\n
+		To get chat_id do:
+			- In telegram:\n start a chat with @id_chatbot
+			- In Bale:\n start a chat with chatid_bot
+		"
+	chatId=$REPLY
+}
 
 while :
   do
      case "$1" in
 	     -b | --bale)
-		     which virtualenv &> /dev/null || (echo "Cannot use Bale without virtualenv" && exit 1)
+		     which virtualenv &> /dev/null || (echo "Cannot use Bale without virtualenv, please run \"pip install virtualenv\" before run this script with -b option" && exit 1)
 		     useBale = "True"
 		     break
 		     ;;
@@ -89,12 +107,24 @@ which $pipCommand &> /dev/null || (echo -e "Please install pip, and run this scr
 				for python3.* use apt-get install python3-pip" && exit 1)
 
 ## Install virtualenv if is not installed
-which virtualenv &> /dev/null || read -p "Do you want to install virtualenv(y/n)? " -n 1 -r
-([[ ! $REPLY =~ ^[yY]$ ]] && $pipCommand install virtualenv  && useVenv) || (echo "")
+(which virtualenv &> /dev/null && useVenv) || read -p "Do you want to install virtualenv(y/n)? " -n 1 -r
+## User accepted
+[[ ! $REPLY =~ ^[yY]$ ]] && $pipCommand install virtualenv  && useVenv
 
-([ -f requirements.txt ] && pip install -r requirements) || echo "Cannot find requirements.txt, please clone complete this repository from here:\nhttps://github.com/MParvin/TSMB/, \nthen run Autoinstall.sh"
-if [ "$useBale" -eq "True"]
+## Install requirements
+([ -f requirements.txt ] && $pipCommand install -r requirements.txt) || echo "Could not find requirements.txt, please clone complete this repository from here:\nhttps://github.com/MParvin/TSMB/, \nthen run Autoinstall.sh"
+if [ "$useBale" -eq 1 ]
 then
 	useBaleAPI
 fi
 
+
+read -p "Do you want to configure your bot now(y/n)?"
+if [ $REPLY =~ ^[yY] ]
+then
+	configureBot
+else
+	echo -e "To use this bot, first change variables in \"config\" file\n
+		then executable bot script \"chmod +x bot.py \"
+		and run it: \"./bot.py \""
+fi
