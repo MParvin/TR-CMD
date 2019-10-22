@@ -52,6 +52,8 @@ Put your chat_id and Token(in step1) in config.
  ./tsmb.py
  ```
 ## Sample of htop output:
+To get a snapshot of htop, send `/htop` command to bot, output will be like this:
+
 ![htop output](https://github.com/MParvin/TSMB/blob/master/htop_output.png?raw=true)
  
 ## Updates:
