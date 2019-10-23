@@ -7,13 +7,13 @@ useBale=0
 
 ## Display help for commands
 showHelp() {
-   echo -e "Autoinstall usage: $0 [option..]\n 
+   echo -e "Autoinstall usage: $0 [option..]\n
    	-b, --bale		For install bale api instead of Telegram API \n
-	-h, --help		This help message\n
-	-d, --debug		Enable bash debug\n
-	-i, --interactive	Install requirements for interactive commands\n
-	-u, --useful		Install useful commands\n
-	-3, --python3		Use python3 instead of Python2\n
+	  -h, --help		This help message\n
+	  -d, --debug		Enable bash debug\n
+	  -i, --interactive	Install requirements for interactive commands\n
+	  -u, --useful		Install useful commands\n
+	  -3, --python3		Use python3 instead of Python2\n
 	"
 	exit 0
 }
@@ -21,7 +21,7 @@ showHelp() {
 ## Use virtualenv
 useVenv() {
 	## Create virtual environment
-	virtualenv -p $pythonCommand venv 
+	virtualenv -p $pythonCommand venv
 	## Activate virtual environment
 	source venv/bin/activate
 }
@@ -29,19 +29,19 @@ useVenv() {
 
 useBaleAPI() {
 	## Change telegram API URL to Bale API URL
-	find ./ -name bot.py -exec sed -i 's/api\.telegram\.org/tapi.bale.ai/mg' {} \;	
+	find ./ -name bot.py -exec sed -i 's/api\.telegram\.org/tapi.bale.ai/mg' {} \;
 }
 
 
 ## to use interactive commands like htop we need these packages
 installAha() {
-	[ -f "/etc/debian_version" ] && apt-get update && apt-get install -y aha && return 0 
+	[ -f "/etc/debian_version" ] && apt-get update && apt-get install -y aha && return 0
 	(git clone https://github.com/theZiz/aha.git && cd aha && make && make install return 0) || ( echo "cannot install aha, please use -d to debug \nPlease submit an issue here:\n https://github.com/MParvin/TSMB/issues/new" && exit 1)
 
 }
 
-## Install htop
-installHtop() {
+## Install useful commands
+installUsefulCMD() {
 	echo "Installing htop, please wait a moment..."
 	yum install -y htop &> /dev/null ||  apt install -y htop &> /dev/null
 }
@@ -51,7 +51,7 @@ configureBot(){
 		How to create Telegram bot: https://core.telegram.org/bots#3-how-do-i-create-a-bot\n
 		How to create Bale bot: https://devbale.ir/quick-start\n"
 	read -p "Enter your bot token here:"
-	
+
 	telegramToken=$REPLY
 
 	echo -e "Get chat_id and enter here:\n
@@ -83,7 +83,7 @@ while :
 		     break
 		     ;;
 	     -u | --useful)
-		     installHtop
+		     installUsefulCMD
 		     break
 		     ;;
 	    -3 | --python3)
@@ -94,7 +94,7 @@ while :
 	     *)
 		     break
 		     ;;
-    
+
     esac
   done
 
@@ -109,7 +109,7 @@ which $pipCommand &> /dev/null || (echo -e "Please install pip, and run this scr
 ## Install virtualenv if is not installed
 (which virtualenv &> /dev/null && useVenv) || read -p "Do you want to install virtualenv(y/n)? " -n 1 -r
 ## User accepted
-[[ ! $REPLY =~ ^[yY]$ ]] && $pipCommand install virtualenv  && useVenv
+[[ ! $REPLY =~ ^[yY]$ ]] && $pipCommand install virtualenv --user && useVenv
 
 ## Install requirements
 ([ -f requirements.txt ] && $pipCommand install -r requirements.txt) || echo "Could not find requirements.txt, please clone complete this repository from here:\nhttps://github.com/MParvin/TSMB/, \nthen run Autoinstall.sh"
