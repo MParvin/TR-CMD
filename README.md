@@ -47,6 +47,7 @@ Put your chat_id and Token(in step1) in config.
  ```bash
  chmod +x tsmb.py
  ```
+ 
  4. Run file:
  ```bash
  ./tsmb.py
