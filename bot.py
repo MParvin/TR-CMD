@@ -12,15 +12,15 @@ import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 
-# Import modules
-from modules.check_admin import isAdmin
-from modules.run_commands import runCMD
-
 config = configparser.ConfigParser()
 config.read("config")
 ### Get admin chat_id from config file
 ### For more security replies only send to admin chat_id
 adminCID = config["SecretConfig"]["admincid"]
+
+# Import modules
+from modules.check_admin import isAdmin
+from modules.run_commands import runCMD
 
 ### Enable logging
 logging.basicConfig(
@@ -28,20 +28,6 @@ logging.basicConfig(
     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-
-### This function ping 8.8.8.8 and send you result
-def ping8(bot, update):
-    if not isAdmin(bot, update):
-        return
-    cmdOut = str(
-        subprocess.check_output("ping",
-                                "8.8.8.8 -c4",
-                                stderr=subprocess.STDOUT,
-                                shell=True),
-        "utf-8",
-    )
-    bot.sendMessage(text=cmdOut, chat_id=adminCID)
 
 
 def startCMD(bot, update):
