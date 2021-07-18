@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from check_privileges import checkPrivilege
+from modules.check_privileges import checkPrivilege
 
 
 ### This function run command and send output to user
