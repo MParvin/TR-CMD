@@ -19,15 +19,10 @@ config.read("config")
 adminCID = config["SecretConfig"]["admincid"]
 
 # Import modules
+import modules.logger
 from modules.check_admin import isAdmin
 from modules.run_commands import runCMD
-
-### Enable logging
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO)
-
-logger = logging.getLogger(__name__)
+from modules.run_ping import ping8
 
 
 def startCMD(bot, update):
