@@ -23,6 +23,7 @@ from modules.check_admin import isAdmin
 from modules.run_commands import runCMD
 from modules.run_ping import ping8
 from modules.monitoring_commands import *
+from modules.check_privileges import *
 
 
 def startCMD(bot, update):
