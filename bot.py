@@ -30,7 +30,7 @@ def startCMD(bot, update):
         return
     bot.sendMessage(
         text=
-        "Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!",
+        "Welcome to TCMD bot, this is Linux server/PC manager, Please use /help and read carefully!!",
         chat_id=adminCID,
     )
 
