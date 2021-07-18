@@ -12,7 +12,7 @@ import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 config = configparser.ConfigParser()
-config.read("config")
+config.read(".env")
 ### Get admin chat_id from config file
 ### For more security replies only send to admin chat_id
 adminCID = config["SecretConfig"]["admincid"]
