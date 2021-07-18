@@ -42,8 +42,8 @@ Telegram Server Manager Bot - Safe &amp; Easy run command in your RaspberryPi, P
   {"ok":true,"result":[{"update_id":124681718,
 "message":{"message_id":2888,"from":{"id":131728488,"is_bot":false,"first_name":"Mohammad","last_name":"Parvin","username":"mmparvin","language_code":"en-US"},"chat":{"id":131728488,"first_name":"Mohammad","last_name":"Parvin","username":"mmparvin","type":"private"},"date":1523988641,"text":"HHHHHHHHHHH"}}]}
   ```
-Put your chat_id and Token(in step1) in config.
- 3. Make executable tsmb.py file:
+Copy env.example to `.env` and edit your chat_id and Token(in step1) in `.env` file.
+ 1. Make executable tsmb.py file:
  ```bash
  chmod +x tsmb.py
  ```
