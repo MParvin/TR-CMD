@@ -12,6 +12,8 @@ import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 
+# Import modules
+from modules.run_commands import runCMD
 
 config = configparser.ConfigParser()
 config.read("config")
@@ -21,23 +23,10 @@ adminCID = config["SecretConfig"]["admincid"]
 
 ### Enable logging
 logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-### This function run command and send output to user
-def runCMD(bot, update):
-    if not isAdmin(bot, update):
-        return
-    usercommand = update.message.text
-    cmdProc = subprocess.Popen(
-        usercommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
-    )
-    cmdOut, cmdErr = cmdProc.communicate()
-    if cmdOut:
-        bot.sendMessage(text=str(cmdOut, "utf-8"), chat_id=adminCID)
-    else:
-        bot.sendMessage(text=str(cmdErr, "utf-8"), chat_id=adminCID)
 
 
 ### This function ping 8.8.8.8 and send you result
@@ -45,9 +34,10 @@ def ping8(bot, update):
     if not isAdmin(bot, update):
         return
     cmdOut = str(
-        subprocess.check_output(
-            "ping", "8.8.8.8 -c4", stderr=subprocess.STDOUT, shell=True
-        ),
+        subprocess.check_output("ping",
+                                "8.8.8.8 -c4",
+                                stderr=subprocess.STDOUT,
+                                shell=True),
         "utf-8",
     )
     bot.sendMessage(text=cmdOut, chat_id=adminCID)
@@ -57,7 +47,8 @@ def startCMD(bot, update):
     if not isAdmin(bot, update):
         return
     bot.sendMessage(
-        text="Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!",
+        text=
+        "Welcome to TSMB bot, this is Linux server/PC manager, Please use /help and read carefully!!",
         chat_id=adminCID,
     )
 
@@ -66,7 +57,8 @@ def helpCMD(bot, update):
     if not isAdmin(bot, update):
         return
     bot.sendMessage(
-        text="This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.",
+        text=
+        "This bot has access to your server/PC, So it can do anything. Please use Telegram local password to prevent others from accessing to this bot.",
         chat_id=adminCID,
     )
 
@@ -87,14 +79,16 @@ def HTopCMD(bot, update):
     htopCheck = subprocess.call(["which", "htop"])
     if htopCheck != 0:
         bot.sendMessage(
-            text="htop is not installed on your system, Please install it first and try again",
+            text=
+            "htop is not installed on your system, Please install it first and try again",
             chat_id=adminCID,
         )
         return
     ahaCheck = subprocess.call(["which", "aha"])
     if ahaCheck != 0:
         bot.sendMessage(
-            text="aha is not installed on your system, Please install it first and try again",
+            text=
+            "aha is not installed on your system, Please install it first and try again",
             chat_id=adminCID,
         )
         return
@@ -116,11 +110,9 @@ def isAdmin(bot, update):
         return True
     else:
         update.message.reply_text(
-            "You cannot use this bot, because you are not Admin!!!!"
-        )
+            "You cannot use this bot, because you are not Admin!!!!")
         alertMessage = """Some one try to use this bot with this information:\n chat_id is {} and username is {} """.format(
-            update.message.chat_id, update.message.from_user.username
-        )
+            update.message.chat_id, update.message.from_user.username)
         bot.sendMessage(text=alertMessage, chat_id=adminCID)
         return False
 
