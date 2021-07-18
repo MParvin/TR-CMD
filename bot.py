@@ -10,7 +10,6 @@ import subprocess
 import configparser
 import os
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-import logging
 
 config = configparser.ConfigParser()
 config.read("config")
