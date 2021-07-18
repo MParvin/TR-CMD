@@ -124,7 +124,7 @@ if [ $REPLY =~ ^[yY] ]
 then
     configureBot
 else
-    echo -e "To use this bot, first change variables in \"config\" file\n
+    echo -e "To use this bot, first change variables in \".env\" file\n
 		then executable bot script \"chmod +x bot.py \"
     and run it: \"./bot.py \""
 fi
