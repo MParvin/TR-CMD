@@ -7,6 +7,9 @@ def runCMD(bot, update):
     if not isAdmin(bot, update):
         return
     usercommand = update.message.text
+
+    if not checkPrivilege(usercommand):
+        return
     cmdProc = subprocess.Popen(usercommand,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
