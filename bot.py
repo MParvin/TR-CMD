@@ -13,6 +13,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 
 # Import modules
+from modules.check_admin import isAdmin
 from modules.run_commands import runCMD
 
 config = configparser.ConfigParser()
@@ -102,19 +103,6 @@ def HTopCMD(bot, update):
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
-
-
-def isAdmin(bot, update):
-    chat_id = update.message.chat_id
-    if str(chat_id) == adminCID:
-        return True
-    else:
-        update.message.reply_text(
-            "You cannot use this bot, because you are not Admin!!!!")
-        alertMessage = """Some one try to use this bot with this information:\n chat_id is {} and username is {} """.format(
-            update.message.chat_id, update.message.from_user.username)
-        bot.sendMessage(text=alertMessage, chat_id=adminCID)
-        return False
 
 
 def main():
