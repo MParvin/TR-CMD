@@ -18,7 +18,7 @@ config.read(".env")
 adminCID = config["SecretConfig"]["admincid"]
 
 # Import modules
-import modules.logger
+from modules.logger import *
 from modules.check_admin import isAdmin
 from modules.run_commands import runCMD
 from modules.run_ping import ping8
