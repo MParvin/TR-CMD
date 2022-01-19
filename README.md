@@ -43,14 +43,14 @@ Telegram Server Manager Bot - Safe &amp; Easy run command in your RaspberryPi, P
 "message":{"message_id":2888,"from":{"id":131728488,"is_bot":false,"first_name":"Mohammad","last_name":"Parvin","username":"mmparvin","language_code":"en-US"},"chat":{"id":131728488,"first_name":"Mohammad","last_name":"Parvin","username":"mmparvin","type":"private"},"date":1523988641,"text":"HHHHHHHHHHH"}}]}
   ```
 Put your chat_id and Token(in step1) in config.
- 3. Make executable tsmb.py file:
+ 3. Make executable `bot.py` file:
  ```bash
- chmod +x tsmb.py
+ chmod +x bot.py
  ```
  
  4. Run file:
  ```bash
- ./tsmb.py
+ ./bot.py
  ```
 ## Sample of htop output:
 To get a snapshot of htop, send `/htop` command to bot, output will be like this:
