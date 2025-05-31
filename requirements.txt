@@ -1,4 +1,4 @@
-certifi==2023.7.22
+certifi==2024.7.4
 future==0.18.3
 configparser==4.0.2
 python-telegram-bot==10.0.1
